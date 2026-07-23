@@ -27,6 +27,6 @@ export const QUICK: { type: string; label: string; ic: string }[] = [
   { type: 'comio', label: 'Comió', ic: 'bowl' },
   { type: 'pipi', label: 'Pipí', ic: 'drop' },
   { type: 'caca', label: 'Caca', ic: 'poop' },
-  { type: 'agua', label: 'Agua', ic: 'drop' },
+  { type: 'agua', label: 'Agua', ic: 'waterdrop' },
   { type: 'sesion', label: 'Sesión', ic: 'cap' },
 ]

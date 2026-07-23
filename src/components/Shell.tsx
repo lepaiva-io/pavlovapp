@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { sb } from '../lib/supabase'
 import { useApp } from '../state/store'
 import { Ic } from '../lib/icons'
+import { effectiveTheme, toggleTheme } from '../lib/theme'
 import { PawLogo, Spinner } from './ui'
 import { PetForm } from './forms/Forms'
 import Ficha from './tabs/Ficha'
@@ -25,8 +26,10 @@ const NAV: { key: Tab; ic: string; label: string }[] = [
 export default function Shell() {
   const { pets, pet, setPet, family, loading, openModal } = useApp()
   const [tab, setTab] = useState<Tab>('resumen')
+  const [theme, setTheme] = useState(effectiveTheme())
 
   const logout = async () => { await sb.auth.signOut() }
+  const flipTheme = () => setTheme(toggleTheme())
 
   const content = () => {
     if (tab === 'resumen') return <Ficha />
@@ -47,6 +50,9 @@ export default function Shell() {
         <div className="sp" />
         <button className="iconbtn" title="Agregar mascota" onClick={() => { if (family) openModal(<PetForm />) }}>
           <Ic name="plus" style={{ width: 18, height: 18, verticalAlign: '-.2em' }} />
+        </button>
+        <button className="iconbtn" title={theme === 'dark' ? 'Tema claro' : 'Tema oscuro'} onClick={flipTheme}>
+          <Ic name={theme === 'dark' ? 'sun' : 'moon'} style={{ width: 18, height: 18, verticalAlign: '-.2em' }} />
         </button>
         <button className="iconbtn" title="Salir" onClick={logout}>Salir</button>
       </header>

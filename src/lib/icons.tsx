@@ -31,7 +31,10 @@ export const ICONS: Record<string, string> = {
   bowl: '<path d="M3 11h18a9 9 0 0 1-18 0Z"/><path d="M12 11c0-3 2-4 2-6M9 11c0-2 1-3 1-4"/>',
   drop: '<path d="M12 3c3 4 5 6.5 5 9.5A5 5 0 0 1 7 12.5C7 9.5 9 7 12 3Z"/>',
   poop: '<path d="M8 20h8a3 3 0 0 0 0-6 3 3 0 0 0-.6-4.5A2.8 2.8 0 0 0 12 5a2.5 2.5 0 0 0-1.5 4A3 3 0 0 0 8 14a3 3 0 0 0 0 6Z"/>',
+  waterdrop: '<path d="M12 3c3.5 4.5 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 2.5-6.5 6-11Z"/><path d="M9 14a3 3 0 0 0 3 3"/>',
   pdf: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M8 13h1.5a1.5 1.5 0 0 1 0 3H8v-3Zm0 3v2"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/>',
+  moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5Z"/>',
 }
 
 export function Ic({ name, cls, style }: { name: string; cls?: string; style?: CSSProperties }) {
