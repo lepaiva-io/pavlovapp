@@ -5,7 +5,7 @@ import { useApp } from '../../state/store'
 import { CAT } from '../../lib/constants'
 import { todayISO } from '../../lib/helpers'
 import type { Pet, MedicalRecord, DailyLog, Reminder, Contact, Member } from '../../lib/types'
-import { ModalShell, Field, Area, SelectF, Gap } from '../ui'
+import { FullScreen, Field, Area, SelectF, Gap } from '../ui'
 
 const val = (fd: FormData, k: string) => String(fd.get(k) ?? '').trim()
 const orNull = (s: string) => (s === '' ? null : s)
@@ -47,7 +47,7 @@ export function PetForm({ pet }: { pet?: Pet }) {
   }
 
   return (
-    <ModalShell title={isNew ? 'Nueva mascota' : 'Editar ficha'} onClose={closeModal}>
+    <FullScreen title={isNew ? 'Nueva mascota' : 'Editar ficha'} onClose={closeModal}>
       <form onSubmit={submit}>
         <Field label="Nombre" name="name" defaultValue={p.name} />
         <SelectF label="Especie" name="species" defaultValue={p.species || 'perro'} options={[['perro', 'Perro'], ['gato', 'Gato'], ['otro', 'Otro']]} />
@@ -66,7 +66,7 @@ export function PetForm({ pet }: { pet?: Pet }) {
         <button className="btn block" disabled={busy}>Guardar</button>
         {!isNew && <><Gap h={8} /><button type="button" className="btn danger block" onClick={del}>Eliminar mascota</button></>}
       </form>
-    </ModalShell>
+    </FullScreen>
   )
 }
 
@@ -95,7 +95,7 @@ export function MedForm({ rec }: { rec?: MedicalRecord }) {
     closeModal(); bumpData(); toast('Eliminado')
   }
   return (
-    <ModalShell title={isNew ? 'Nuevo registro médico' : 'Editar registro'} onClose={closeModal}>
+    <FullScreen title={isNew ? 'Nuevo registro médico' : 'Editar registro'} onClose={closeModal}>
       <form onSubmit={submit}>
         <SelectF label="Tipo" name="category" defaultValue={m.category || 'vacuna'} options={Object.keys(CAT).map((k) => [k, CAT[k].label])} />
         <Field label="Título" name="title" defaultValue={m.title} />
@@ -107,7 +107,7 @@ export function MedForm({ rec }: { rec?: MedicalRecord }) {
         <button className="btn block">Guardar</button>
         {!isNew && <><Gap h={8} /><button type="button" className="btn danger block" onClick={del}>Eliminar</button></>}
       </form>
-    </ModalShell>
+    </FullScreen>
   )
 }
 
@@ -135,7 +135,7 @@ export function LogForm({ log }: { log?: DailyLog }) {
     closeModal(); bumpData(); toast('Eliminado')
   }
   return (
-    <ModalShell title={isNew ? 'Nuevo registro diario' : 'Editar registro'} onClose={closeModal}>
+    <FullScreen title={isNew ? 'Nuevo registro diario' : 'Editar registro'} onClose={closeModal}>
       <form onSubmit={submit}>
         <Field label="Fecha" name="log_date" defaultValue={l.log_date || todayISO()} type="date" />
         <SelectF label="Ánimo" name="mood" defaultValue={l.mood || ''} options={[['', '—'], ['Tranquila', 'Tranquila'], ['Activa / juguetona', 'Activa / juguetona'], ['Decaída', 'Decaída'], ['Ansiosa', 'Ansiosa'], ['Adaptándose', 'Adaptándose']]} />
@@ -147,7 +147,7 @@ export function LogForm({ log }: { log?: DailyLog }) {
         <button className="btn block">Guardar</button>
         {!isNew && <><Gap h={8} /><button type="button" className="btn danger block" onClick={del}>Eliminar</button></>}
       </form>
-    </ModalShell>
+    </FullScreen>
   )
 }
 
@@ -172,7 +172,7 @@ export function RemForm({ rem }: { rem?: Reminder }) {
     closeModal(); bumpData(); toast('Eliminado')
   }
   return (
-    <ModalShell title={isNew ? 'Nuevo recordatorio' : 'Editar recordatorio'} onClose={closeModal}>
+    <FullScreen title={isNew ? 'Nuevo recordatorio' : 'Editar recordatorio'} onClose={closeModal}>
       <form onSubmit={submit}>
         <Field label="Título" name="title" defaultValue={r.title} placeholder="Ej: control veterinario" />
         <Field label="Fecha" name="due_date" defaultValue={r.due_date} type="date" />
@@ -181,7 +181,7 @@ export function RemForm({ rem }: { rem?: Reminder }) {
         <button className="btn block">Guardar</button>
         {!isNew && <><Gap h={8} /><button type="button" className="btn danger block" onClick={del}>Eliminar</button></>}
       </form>
-    </ModalShell>
+    </FullScreen>
   )
 }
 
@@ -206,7 +206,7 @@ export function ConForm({ con }: { con?: Contact }) {
     closeModal(); bumpData(); toast('Eliminado')
   }
   return (
-    <ModalShell title={isNew ? 'Nuevo contacto' : 'Editar contacto'} onClose={closeModal}>
+    <FullScreen title={isNew ? 'Nuevo contacto' : 'Editar contacto'} onClose={closeModal}>
       <form onSubmit={submit}>
         <Field label="Nombre" name="name" defaultValue={x.name} />
         <SelectF label="Tipo" name="role" defaultValue={x.role || 'veterinaria'} options={[['veterinaria', 'Veterinaria'], ['peluqueria', 'Peluquería'], ['paseador', 'Paseador'], ['otro', 'Otro']]} />
@@ -217,7 +217,7 @@ export function ConForm({ con }: { con?: Contact }) {
         <button className="btn block">Guardar</button>
         {!isNew && <><Gap h={8} /><button type="button" className="btn danger block" onClick={del}>Eliminar</button></>}
       </form>
-    </ModalShell>
+    </FullScreen>
   )
 }
 
@@ -238,7 +238,7 @@ export function ManageFamily() {
     closeModal(); toast('Invitación creada')
   }
   return (
-    <ModalShell title={'Miembros de ' + family!.name} onClose={closeModal}>
+    <FullScreen title={'Miembros de ' + family!.name} onClose={closeModal}>
       {members.length ? members.map((m) => (
         <div className="item" key={m.id}>
           <div className="t" style={{ fontSize: 14 }}>{m.email || '(sin correo)'}</div>
@@ -253,6 +253,6 @@ export function ManageFamily() {
         <Gap h={12} />
         <button className="btn block">Invitar</button>
       </form>
-    </ModalShell>
+    </FullScreen>
   )
 }
