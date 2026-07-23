@@ -29,6 +29,19 @@ export const longDate = (dayISO?: string): string => {
   return `${DIAS[dt.getDay()]}, ${dt.getDate()} de ${MESES[dt.getMonth()]}`
 }
 
+// hora local HH:MM desde un timestamp ISO
+export const timeHM = (iso: string): string => {
+  const d = new Date(iso)
+  return d.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false })
+}
+
+// convierte un timestamp ISO a fecha local YYYY-MM-DD
+export const localDateOf = (iso: string): string => {
+  const d = new Date(iso)
+  const l = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+  return l.toISOString().slice(0, 10)
+}
+
 // diferencia en días entre hoy y una fecha ISO (fecha - hoy)
 export const daysFromToday = (d?: string | null): number | null => {
   if (!d) return null

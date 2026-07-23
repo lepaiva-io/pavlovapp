@@ -1,43 +1,33 @@
 import { useState } from 'react'
-import { sb } from '../lib/supabase'
 import { useApp } from '../state/store'
 import { Ic } from '../lib/icons'
-import { effectiveTheme, toggleTheme } from '../lib/theme'
 import { PawLogo, Spinner } from './ui'
 import { PetForm } from './forms/Forms'
+import Inicio from './tabs/Inicio'
 import Ficha from './tabs/Ficha'
-import Medico from './tabs/Medico'
 import Diario from './tabs/Diario'
 import Entreno from './tabs/Entreno'
-import Alertas from './tabs/Alertas'
-import Contactos from './tabs/Contactos'
+import Ajustes from './Ajustes'
 
-type Tab = 'resumen' | 'medico' | 'diario' | 'entreno' | 'recordatorios' | 'contactos'
+type Tab = 'inicio' | 'ficha' | 'diario' | 'entreno'
 
 const NAV: { key: Tab; ic: string; label: string }[] = [
-  { key: 'resumen', ic: 'paw', label: 'Ficha' },
-  { key: 'medico', ic: 'stethoscope', label: 'Médico' },
+  { key: 'inicio', ic: 'paw', label: 'Inicio' },
+  { key: 'ficha', ic: 'clipboard', label: 'Ficha' },
   { key: 'diario', ic: 'notebook', label: 'Diario' },
   { key: 'entreno', ic: 'cap', label: 'Entreno' },
-  { key: 'recordatorios', ic: 'bell', label: 'Alertas' },
-  { key: 'contactos', ic: 'contacts', label: 'Contactos' },
 ]
 
 export default function Shell() {
   const { pets, pet, setPet, family, loading, openModal } = useApp()
-  const [tab, setTab] = useState<Tab>('resumen')
-  const [theme, setTheme] = useState(effectiveTheme())
-
-  const logout = async () => { await sb.auth.signOut() }
-  const flipTheme = () => setTheme(toggleTheme())
+  const [tab, setTab] = useState<Tab>('inicio')
+  const [settings, setSettings] = useState(false)
 
   const content = () => {
-    if (tab === 'resumen') return <Ficha />
-    if (tab === 'medico') return <Medico />
+    if (tab === 'inicio') return <Inicio />
+    if (tab === 'ficha') return <Ficha />
     if (tab === 'diario') return <Diario />
-    if (tab === 'entreno') return <Entreno />
-    if (tab === 'recordatorios') return <Alertas />
-    return <Contactos />
+    return <Entreno />
   }
 
   return (
@@ -51,10 +41,9 @@ export default function Shell() {
         <button className="iconbtn" title="Agregar mascota" onClick={() => { if (family) openModal(<PetForm />) }}>
           <Ic name="plus" style={{ width: 18, height: 18, verticalAlign: '-.2em' }} />
         </button>
-        <button className="iconbtn" title={theme === 'dark' ? 'Tema claro' : 'Tema oscuro'} onClick={flipTheme}>
-          <Ic name={theme === 'dark' ? 'sun' : 'moon'} style={{ width: 18, height: 18, verticalAlign: '-.2em' }} />
+        <button className="iconbtn" title="Ajustes" onClick={() => setSettings(true)}>
+          <Ic name="gear" style={{ width: 18, height: 18, verticalAlign: '-.2em' }} />
         </button>
-        <button className="iconbtn" title="Salir" onClick={logout}>Salir</button>
       </header>
 
       <div className="wrap">
@@ -68,6 +57,8 @@ export default function Shell() {
           </button>
         ))}
       </nav>
+
+      {settings && <Ajustes onClose={() => setSettings(false)} />}
     </div>
   )
 }

@@ -120,15 +120,6 @@ function SkillDetail({ skill, initial }: { skill: TrainingSkill; initial: Status
           <ol className="sd-steps">{skill.steps.map((x, i) => <li key={i}>{x}</li>)}</ol>
         </div>
       )}
-      {skill.videos?.length > 0 && (
-        <div className="sd-block"><div className="sd-bt"><Ic name="play" /> Videos de Canine-Service</div>
-          <div className="sd-vids">
-            {skill.videos.map((v, i) => (
-              <a key={i} className="sd-vid" href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer"><Ic name="play" /><span>{v.t}</span></a>
-            ))}
-          </div>
-        </div>
-      )}
       {skill.done_criteria && (
         <div className="sd-done"><Ic name="checkcircle" /><div><b style={{ display: 'block', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 2 }}>Logrado cuando</b>{skill.done_criteria}</div></div>
       )}

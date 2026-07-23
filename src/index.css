@@ -261,3 +261,31 @@ nav.tabs button .ic .ic-svg{width:22px;height:22px}
 .ob .skip{background:none;border:none;color:rgba(255,255,255,.85);font-family:inherit;font-size:13px;padding:6px}
 .ob-card{background:var(--surface);color:var(--ink);border-radius:20px;padding:24px;max-width:360px;width:100%;box-shadow:var(--shadow);text-align:left}
 .ob-card h3{margin:0 0 4px;color:var(--navy)}
+
+/* ===== sub-pestañas (segmented) ===== */
+.subtabs{display:flex;gap:4px;background:var(--brand-soft);border-radius:12px;padding:4px;margin-bottom:14px}
+.subtabs button{flex:1;border:none;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:13px;padding:9px 6px;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:6px}
+.subtabs button .ic-svg{width:16px;height:16px}
+.subtabs button.on{background:var(--surface);color:var(--brand-d);box-shadow:var(--shadow)}
+
+/* ===== pantalla de Ajustes ===== */
+.settings{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column}
+.settings-top{position:sticky;top:0;background:var(--header-bg);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.settings-top h2{font-size:18px;margin:0;font-weight:800;color:#fff}
+.settings-top .back{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:9px;padding:7px 10px;display:inline-flex}
+.settings-body{flex:1;overflow:auto;padding:16px 14px calc(24px + env(safe-area-inset-bottom));max-width:820px;margin:0 auto;width:100%}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.setrow .lab{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px}
+.setrow .lab .ic-svg{width:20px;height:20px;color:var(--brand-d)}
+
+/* ===== Diario: racha + línea de tiempo ===== */
+.streak{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--yellow),#F5A623);color:#4a2f00;border-radius:16px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.streak .n{font-size:30px;font-weight:800;line-height:1}
+.streak .ic-svg{width:26px;height:26px}
+.streak .lab{font-size:13px;font-weight:700}
+.timeline{position:relative;margin:4px 0 0;padding-left:6px}
+.tl-item{display:flex;align-items:center;gap:12px;padding:8px 0}
+.tl-time{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;width:44px;flex:0 0 auto;font-weight:700}
+.tl-ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;flex:0 0 auto}
+.tl-ic .ic-svg{width:18px;height:18px}
+.tl-label{font-size:14px;font-weight:600}
