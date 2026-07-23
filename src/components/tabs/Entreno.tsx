@@ -5,6 +5,7 @@ import { Ic } from '../../lib/icons'
 import { STLABEL, STDOT } from '../../lib/constants'
 import { fmtDate } from '../../lib/helpers'
 import { Spinner, ModalShell } from '../ui'
+import { playClick, soundOn, setSound } from '../../lib/clicker'
 import type { TrainingSkill, SkillStatusRow, SkillSessionRow, Status } from '../../lib/types'
 
 export default function Entreno() {
@@ -80,6 +81,11 @@ function SkillDetail({ skill, initial }: { skill: TrainingSkill; initial: Status
   const [note, setNote] = useState('')
   const [busy, setBusy] = useState(false)
   const [hist, setHist] = useState<SkillSessionRow[]>([])
+  const [subtab, setSubtab] = useState<'inst' | 'prac'>('inst')
+  const [snd, setSnd] = useState(soundOn())
+
+  const click = () => { playClick(); if (navigator.vibrate) navigator.vibrate(15); setN((x) => x + 1) }
+  const flipSound = () => { const v = !snd; setSound(v); setSnd(v) }
 
   useEffect(() => {
     if (!pet) return
@@ -114,50 +120,72 @@ function SkillDetail({ skill, initial }: { skill: TrainingSkill; initial: Status
         <div className="sd-ico"><Ic name="cap" /></div>
         <div style={{ paddingTop: 4 }}><span className="sd-lvl">NIVEL {Number(skill.phase_order) + 1}</span></div>
       </div>
-      {skill.goal && <div className="sd-goal"><Ic name="target" /><div><b>Objetivo</b><span>{skill.goal}</span></div></div>}
-      {skill.steps?.length > 0 && (
-        <div className="sd-block"><div className="sd-bt"><Ic name="cap" /> Cómo hacerlo</div>
-          <ol className="sd-steps">{skill.steps.map((x, i) => <li key={i}>{x}</li>)}</ol>
-        </div>
-      )}
-      {skill.done_criteria && (
-        <div className="sd-done"><Ic name="checkcircle" /><div><b style={{ display: 'block', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 2 }}>Logrado cuando</b>{skill.done_criteria}</div></div>
-      )}
 
-      <div className="sd-block" style={{ marginTop: 16 }}>
-        <div className="sd-bt"><Ic name="checkcircle" /> Estado</div>
-        <div className="statusseg">
-          <button className={segCls('pendiente')} onClick={() => setStatus('pendiente')}>Pendiente</button>
-          <button className={segCls('en_progreso')} onClick={() => setStatus('en_progreso')}>En progreso</button>
-          <button className={segCls('logrado')} onClick={() => setStatus('logrado')}>Logrado</button>
-        </div>
+      <div className="subtabs">
+        <button className={subtab === 'inst' ? 'on' : ''} onClick={() => setSubtab('inst')}><Ic name="clipboard" /> Instrucciones</button>
+        <button className={subtab === 'prac' ? 'on' : ''} onClick={() => setSubtab('prac')}><Ic name="target" /> Práctica</button>
       </div>
 
-      <div className="sd-block">
-        <div className="sd-bt"><Ic name="target" /> Clicker — sesión de hoy</div>
-        <div className="clicker">
-          <div className="counter">{n}</div>
-          <div className="muted" style={{ fontSize: 12 }}>aciertos en esta sesión</div>
-          <button className="clickbtn" onClick={() => { setN((x) => x + 1); if (navigator.vibrate) navigator.vibrate(15) }}>+</button>
-          <div className="clickrow">
-            <button className="btn sm ghost" onClick={() => setN((x) => Math.max(0, x - 1))}>−1</button>
-            <button className="btn sm ghost" onClick={() => setN(0)}>Reiniciar</button>
-          </div>
-          <div style={{ height: 10 }} />
-          <input placeholder="Nota de la sesión (opcional)" value={note} onChange={(e) => setNote(e.target.value)} />
-          <div style={{ height: 8 }} />
-          <button className="btn block" disabled={busy} onClick={saveSession}>Guardar sesión</button>
-        </div>
-      </div>
-
-      {hist.length > 0 && (
-        <div className="sd-block"><div className="sd-bt"><Ic name="medal" /> Historial de logros</div>
-          {hist.map((x, i) => (
-            <div className="item" style={{ marginBottom: 8 }} key={i}>
-              <div className="t" style={{ fontSize: 14 }}><Ic name="target" /> <span>{x.reps} aciertos · {fmtDate(x.session_date)}</span></div>
-              {x.notes && <div className="desc">{x.notes}</div>}
+      {subtab === 'inst' && (
+        <div>
+          {skill.goal && <div className="sd-goal"><Ic name="target" /><div><b>Objetivo</b><span>{skill.goal}</span></div></div>}
+          {skill.steps?.length > 0 && (
+            <div className="sd-block"><div className="sd-bt"><Ic name="cap" /> Cómo hacerlo</div>
+              <ol className="sd-steps">{skill.steps.map((x, i) => <li key={i}>{x}</li>)}</ol>
             </div>
-          ))}
+          )}
+          {skill.done_criteria && (
+            <div className="sd-done"><Ic name="checkcircle" /><div><b style={{ display: 'block', fontSize: 11, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 2 }}>Logrado cuando</b>{skill.done_criteria}</div></div>
+          )}
+          {!skill.goal && !skill.steps?.length && !skill.done_criteria && (
+            <div className="empty">Sin instrucciones cargadas para este ejercicio.</div>
+          )}
+        </div>
+      )}
+
+      {subtab === 'prac' && (
+        <div>
+          <div className="sd-block">
+            <div className="sd-bt"><Ic name="checkcircle" /> Estado</div>
+            <div className="statusseg">
+              <button className={segCls('pendiente')} onClick={() => setStatus('pendiente')}>Pendiente</button>
+              <button className={segCls('en_progreso')} onClick={() => setStatus('en_progreso')}>En progreso</button>
+              <button className={segCls('logrado')} onClick={() => setStatus('logrado')}>Logrado</button>
+            </div>
+          </div>
+
+          <div className="sd-block">
+            <div className="sd-bt" style={{ justifyContent: 'space-between' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}><Ic name="target" /> Clicker — sesión de hoy</span>
+              <button className="soundtog" onClick={flipSound} title={snd ? 'Silenciar clic' : 'Activar sonido'}>
+                <Ic name={snd ? 'volume' : 'volumeoff'} /> {snd ? 'Sonido' : 'Mudo'}
+              </button>
+            </div>
+            <div className="clicker">
+              <div className="counter">{n}</div>
+              <div className="muted" style={{ fontSize: 12 }}>aciertos en esta sesión</div>
+              <button className="clickbtn" onClick={click}>+</button>
+              <div className="clickrow">
+                <button className="btn sm ghost" onClick={() => setN((x) => Math.max(0, x - 1))}>−1</button>
+                <button className="btn sm ghost" onClick={() => setN(0)}>Reiniciar</button>
+              </div>
+              <div style={{ height: 10 }} />
+              <input placeholder="Nota de la sesión (opcional)" value={note} onChange={(e) => setNote(e.target.value)} />
+              <div style={{ height: 8 }} />
+              <button className="btn block" disabled={busy} onClick={saveSession}>Guardar sesión</button>
+            </div>
+          </div>
+
+          {hist.length > 0 && (
+            <div className="sd-block"><div className="sd-bt"><Ic name="medal" /> Historial de logros</div>
+              {hist.map((x, i) => (
+                <div className="item" style={{ marginBottom: 8 }} key={i}>
+                  <div className="t" style={{ fontSize: 14 }}><Ic name="target" /> <span>{x.reps} aciertos · {fmtDate(x.session_date)}</span></div>
+                  {x.notes && <div className="desc">{x.notes}</div>}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </ModalShell>

@@ -289,3 +289,7 @@ nav.tabs button .ic .ic-svg{width:22px;height:22px}
 .tl-ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;flex:0 0 auto}
 .tl-ic .ic-svg{width:18px;height:18px}
 .tl-label{font-size:14px;font-weight:600}
+
+/* toggle de sonido del clicker */
+.soundtog{display:inline-flex;align-items:center;gap:5px;background:var(--brand-soft);color:var(--brand-d);border:none;border-radius:999px;padding:5px 10px;font-family:inherit;font-size:11px;font-weight:800;text-transform:none;letter-spacing:0}
+.soundtog .ic-svg{width:15px;height:15px}
