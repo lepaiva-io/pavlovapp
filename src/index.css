@@ -290,6 +290,13 @@ nav.tabs button .ic .ic-svg{width:22px;height:22px}
 .tl-ic .ic-svg{width:18px;height:18px}
 .tl-label{font-size:14px;font-weight:600}
 
+/* detalle a pantalla completa */
+.fs{position:fixed;inset:0;z-index:55;background:var(--bg);display:flex;flex-direction:column}
+.fs-top{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:1}
+.fs-top h3{margin:0;color:var(--navy);font-size:17px;font-weight:800}
+.fs-x{background:none;border:none;font-size:26px;color:var(--muted);line-height:1;padding:0 4px}
+.fs-body{flex:1;overflow:auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;width:100%}
+
 /* toggle de sonido del clicker */
 .soundtog{display:inline-flex;align-items:center;gap:5px;background:var(--brand-soft);color:var(--brand-d);border:none;border-radius:999px;padding:5px 10px;font-family:inherit;font-size:11px;font-weight:800;text-transform:none;letter-spacing:0}
 .soundtog .ic-svg{width:15px;height:15px}

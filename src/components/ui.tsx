@@ -51,6 +51,18 @@ export function Gap({ h = 12 }: { h?: number }) {
   return <div style={{ height: h }} />
 }
 
+export function FullScreen({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+  return (
+    <div className="fs">
+      <div className="fs-top">
+        <h3>{title}</h3>
+        <button className="fs-x" onClick={onClose} aria-label="Cerrar">×</button>
+      </div>
+      <div className="fs-body">{children}</div>
+    </div>
+  )
+}
+
 export function ModalShell({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
     <div className="modal-bg" onClick={(e) => { if ((e.target as HTMLElement).classList.contains('modal-bg')) onClose() }}>

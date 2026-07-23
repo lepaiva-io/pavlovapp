@@ -4,7 +4,7 @@ import { useApp } from '../../state/store'
 import { Ic } from '../../lib/icons'
 import { STLABEL, STDOT } from '../../lib/constants'
 import { fmtDate } from '../../lib/helpers'
-import { Spinner, ModalShell } from '../ui'
+import { Spinner, FullScreen } from '../ui'
 import { playClick, soundOn, setSound } from '../../lib/clicker'
 import type { TrainingSkill, SkillStatusRow, SkillSessionRow, Status } from '../../lib/types'
 
@@ -81,7 +81,7 @@ function SkillDetail({ skill, initial }: { skill: TrainingSkill; initial: Status
   const [note, setNote] = useState('')
   const [busy, setBusy] = useState(false)
   const [hist, setHist] = useState<SkillSessionRow[]>([])
-  const [subtab, setSubtab] = useState<'inst' | 'prac'>('inst')
+  const [subtab, setSubtab] = useState<'inst' | 'prac' | 'hist'>('inst')
   const [snd, setSnd] = useState(soundOn())
 
   const click = () => { playClick(); if (navigator.vibrate) navigator.vibrate(15); setN((x) => x + 1) }
@@ -115,7 +115,7 @@ function SkillDetail({ skill, initial }: { skill: TrainingSkill; initial: Status
   const segCls = (v: Status) => (v === cur ? (cur === 'logrado' ? 'on-ok' : cur === 'en_progreso' ? 'on-prog' : 'on-pend') : '')
 
   return (
-    <ModalShell title={skill.title} onClose={closeModal}>
+    <FullScreen title={skill.title} onClose={closeModal}>
       <div className="sd-head">
         <div className="sd-ico"><Ic name="cap" /></div>
         <div style={{ paddingTop: 4 }}><span className="sd-lvl">NIVEL {Number(skill.phase_order) + 1}</span></div>
@@ -124,6 +124,7 @@ function SkillDetail({ skill, initial }: { skill: TrainingSkill; initial: Status
       <div className="subtabs">
         <button className={subtab === 'inst' ? 'on' : ''} onClick={() => setSubtab('inst')}><Ic name="clipboard" /> Instrucciones</button>
         <button className={subtab === 'prac' ? 'on' : ''} onClick={() => setSubtab('prac')}><Ic name="target" /> Práctica</button>
+        <button className={subtab === 'hist' ? 'on' : ''} onClick={() => setSubtab('hist')}><Ic name="medal" /> Historial</button>
       </div>
 
       {subtab === 'inst' && (
@@ -175,19 +176,22 @@ function SkillDetail({ skill, initial }: { skill: TrainingSkill; initial: Status
               <button className="btn block" disabled={busy} onClick={saveSession}>Guardar sesión</button>
             </div>
           </div>
-
-          {hist.length > 0 && (
-            <div className="sd-block"><div className="sd-bt"><Ic name="medal" /> Historial de logros</div>
-              {hist.map((x, i) => (
-                <div className="item" style={{ marginBottom: 8 }} key={i}>
-                  <div className="t" style={{ fontSize: 14 }}><Ic name="target" /> <span>{x.reps} aciertos · {fmtDate(x.session_date)}</span></div>
-                  {x.notes && <div className="desc">{x.notes}</div>}
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       )}
-    </ModalShell>
+
+      {subtab === 'hist' && (
+        <div>
+          <div className="sd-bt" style={{ marginTop: 4 }}><Ic name="medal" /> Historial de sesiones</div>
+          {hist.length === 0 ? (
+            <div className="empty">Aún no hay sesiones guardadas. Registra una en la pestaña Práctica.</div>
+          ) : hist.map((x, i) => (
+            <div className="item" style={{ marginBottom: 8 }} key={i}>
+              <div className="t" style={{ fontSize: 14 }}><Ic name="target" /> <span>{x.reps} aciertos · {fmtDate(x.session_date)}</span></div>
+              {x.notes && <div className="desc">{x.notes}</div>}
+            </div>
+          ))}
+        </div>
+      )}
+    </FullScreen>
   )
 }
